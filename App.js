@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react'
-import { StyleSheet, Text, View, Alert, TextInput, Button, FlatList } from 'react-native';
+import { StyleSheet,View, FlatList } from 'react-native';
 import * as SQLite from 'expo-sqlite'
+import { Header, Input, Button, ListItem } from 'react-native-elements';
+
 
 export default function App() {
   const [product, setProduct] = useState('')
@@ -41,41 +43,42 @@ export default function App() {
        ) }
   
 
-   const listSeparator = () => {
-        return (
-          <View
-            style={{
-              height: 5,
-              width: "80%",
-              backgroundColor: "#fff",
-              marginLeft: "10%"
-            }}
-          />
-        );
-      };
-
 
     return (
     <View style={styles.container}>
-      <TextInput style={{ marginTop: 30, fontSize: 18, width: 200, borderColor: 'gray', borderWidth: 1 }}
+      <Header
+          centerComponent={{ 
+            text: 'SHOPPING LIST',
+            style: { color: '#fff' } }}/>
+      <Input 
+        label="Product"
          placeholder='Product' 
          onChangeText={product => setProduct(product)}
          value={product}/>
-      <TextInput style={{ marginTop: 5, marginBottom: 5, fontSize: 18, width: 200, borderColor: 'gray', borderWidth: 1 }}
+      <Input 
+        label="Amount"
          placeholder='Amount'
          onChangeText={amount => setAmount(amount)} 
          value={amount}/>
-      <Button onPress={saveItem}title="Save" />
-      <Text style={{ marginTop: 30, fontSize: 20 }}>Shopping list</Text>
-      <FlatList style={{marginLeft : "5%"}} 
+      <Button 
+        title="Save" 
+        type="outline"
+        onPress={saveItem}/>
+      
+      <FlatList 
          keyExtractor={item => item.id.toString()} 
          renderItem={({item}) =>
-        <View style={styles.listcontainer}>
-        <Text style={{ fontSize: 18 }}>{item.product},{item.amount} </Text>
-        <Text style={{fontSize: 18, color: '#0000ff'}} onPress={() => deleteItem(item.id)}>done</Text></View>}    
-        ItemSeparatorComponent={listSeparator} 
+        <ListItem>
+        <ListItem.Content>
+         <ListItem.Title>{item.product}</ListItem.Title>
+         <ListItem.Subtitle>{item.amount}</ListItem.Subtitle>
+        </ListItem.Content>
+        </ListItem>}
+       
+        //<Text style={{fontSize: 18, color: '#0000ff'}} onPress={() => deleteItem(item.id)}>done</Text>}    
+       
         data={items} /> 
-
+ 
 
     </View>
   );
